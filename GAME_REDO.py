@@ -2,8 +2,14 @@ import pygame
 import os
 from pathlib import Path
 
+WINDOW_WIDTH = 600
+WINDOW_HEIGHT = 500
+
+CHAR_WIDTH = 32
+CHAR_HEIGHT = 32
+
 pygame.init()
-window = pygame.display.set_mode((600, 500))
+window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("hello...")
 clock = pygame.time.Clock()
 
@@ -99,14 +105,19 @@ while running:
                 x_change = 0
             if event.key == pygame.K_d:
                 x_change = 0
+
+    
     if x < 0:
         x = 0
-    elif x > 760:
-        x = 760
+    elif x >= WINDOW_WIDTH - CHAR_WIDTH:
+        x -= 1
+        continue
     elif y < 0:
         y = 0
-    elif y > 540:
-        y = 540
+    elif y >= WINDOW_HEIGHT - CHAR_HEIGHT:
+        y -=1
+        continue
+
     x = x + x_change
     y = y + y_change
     redrawgamewindow()
