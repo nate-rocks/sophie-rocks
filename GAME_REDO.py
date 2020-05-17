@@ -1,13 +1,19 @@
 import pygame
+import os
+from pathlib import Path
+
 pygame.init()
 window = pygame.display.set_mode((600, 500))
 pygame.display.set_caption("hello...")
 clock = pygame.time.Clock()
 
-front_cat = pygame.image.load(r'C:\Users\sophi\Desktop\player1\front_still.png')
-back_cat = pygame.image.load(r'C:\Users\sophi\Desktop\player1\back_still.png')
-left_cat = pygame.image.load(r'C:\Users\sophi\Desktop\player1\left_still.png')
-right_cat = pygame.image.load(r'C:\Users\sophi\Desktop\player1\right_still.png')
+current_directory = Path(os.path.realpath(__file__)).parent
+image_dir = "{}\\{}".format(current_directory, "player1")
+print("{}\\{}".format(image_dir,'front_still.png'))
+front_cat = pygame.image.load(r"{}\\{}".format(image_dir,'front_still.png'))
+back_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'back_still.png'))
+left_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'left_still.png'))
+right_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'right_still.png'))
 
 black = (0, 0, 0)
 white = (255, 255, 255)
