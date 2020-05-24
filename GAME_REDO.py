@@ -2,124 +2,124 @@ import pygame
 import os
 from pathlib import Path
 
-WINDOW_WIDTH = 600
-WINDOW_HEIGHT = 500
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
-CHAR_WIDTH = 32
-CHAR_HEIGHT = 32
+class Cat(pygame.sprite.Sprite):
+    def __init__(self, init_x, init_y):
+        pygame.sprite.Sprite.__init__(self)
+        self.x = init_x
+        self.y = init_y
+        self.step_size = 5
 
-pygame.init()
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("hello...")
-clock = pygame.time.Clock()
+        self.load_images()
+        self.stand_still()
 
-current_directory = Path(os.path.realpath(__file__)).parent
-image_dir = "{}\\{}".format(current_directory, "player1")
-print("{}\\{}".format(image_dir,'front_still.png'))
-front_cat = pygame.image.load(r"{}\\{}".format(image_dir,'front_still.png'))
-back_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'back_still.png'))
-left_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'left_still.png'))
-right_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'right_still.png'))
+    def load_images(self):
+        current_directory = Path(os.path.realpath(__file__)).parent
+        image_dir = "{}\\{}".format(current_directory, "player1")
+        self.front_cat = pygame.image.load(r"{}\\{}".format(image_dir,'front_still.png'))
+        self.back_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'back_still.png'))
+        self.left_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'left_still.png'))
+        self.right_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'right_still.png'))
 
-black = (0, 0, 0)
-white = (255, 255, 255)
+        self.rect = pygame.Rect((self.x, self.y), self.front_cat.get_rect().size)
 
-x = 50
-y = 50
-x_change = 0
-y_change = 0
-width = 32
-height = 32
-left = False
-right = False
-up = False
-down = False
-walkcount = 0
+    def go_up(self):
+        self.up = True
+        self.right = False
+        self.left = False
+        self.down = False
+        self.y -= self.step_size
 
-def redrawgamewindow():
-    global walkcount
-    window.fill(black)
-    if walkcount >= 27:
-        walkcount = 0
-    if left:
-        window.blit(left_cat, (x, y))
-        walkcount += 1
-    elif right:
-        window.blit(right_cat, (x, y))
-        walkcount += 1
-    elif down:
-        window.blit(front_cat, (x, y))
-        walkcount += 1
-    elif up:
-        window.blit(back_cat, (x, y))
-        walkcount += 1
-    else:
-        window.blit(front_cat, (x, y))
-        walkcount = 0
-    pygame.display.update()
+    def go_down(self):
+        self.up = False
+        self.right = False
+        self.left = False
+        self.down = True
+        self.y += self.step_size
 
-#main game loop
-running = True
-while running:
-    clock.tick(300)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
-                y_change -= 1.3
-                up = True
-                right = False
-                left = False
-                down = False
-            elif event.key == pygame.K_s:
-                y_change += 1.3
-                down = True
-                right = False
-                left = False
-                up = False
-            elif event.key == pygame.K_a:
-                x_change -= 1.3
-                left = True
-                right = False
-                down = False
-                up = False
-            elif event.key == pygame.K_d:
-                x_change += 1.3
-                right = True
-                left = False
-                up = False
-                down = False
-            else:
-                right = False
-                up = False
-                down = False
-                left = False
-                walkcount = 0
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_w:
-                y_change = 0
-            if event.key == pygame.K_s:
-                y_change = 0
-            if event.key == pygame.K_a:
-                x_change = 0
-            if event.key == pygame.K_d:
-                x_change = 0
+    def go_right(self):
+        self.up = False
+        self.right = True
+        self.left = False
+        self.down = False
+        self.x += self.step_size
 
-    
-    if x < 0:
-        x = 0
-    elif x >= WINDOW_WIDTH - CHAR_WIDTH:
-        x -= 1
-        continue
-    elif y < 0:
-        y = 0
-    elif y >= WINDOW_HEIGHT - CHAR_HEIGHT:
-        y -=1
-        continue
+    def go_left(self):
+        self.up = False
+        self.right = False
+        self.left = True
+        self.down = False
+        self.x -= self.step_size
 
-    x = x + x_change
-    y = y + y_change
-    redrawgamewindow()
+    def stand_still(self):
+        self.up = False
+        self.right = False
+        self.left = False
+        self.down = False
 
-pygame.quit()
+    def redraw_cat(self, window):
+        self.rect.move_ip(self.x, self.y)
+        if self.left:
+            window.blit(self.left_cat, (self.rect.x, self.rect.y))
+        elif self.right:
+            window.blit(self.right_cat, (self.rect.x, self.rect.y))
+        elif self.down:
+            window.blit(self.front_cat, (self.rect.x, self.rect.y))
+        elif self.up:
+            window.blit(self.back_cat, (self.rect.x, self.rect.y))
+        else:
+            window.blit(self.front_cat, (self.rect.x, self.rect.y))
+        self.x = 0
+        self.y = 0
+
+
+
+class SophieGame():
+    def __init__(self):
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        
+        self.window_width = 600
+        self.window_height = 500
+        self.window = pygame.display.set_mode((self.window_width, self.window_height))
+        pygame.display.set_caption("hello...")
+        self.window_edge = self.window.get_rect()
+        self.cat = Cat(50, 50)
+
+    def check_window_bounds(self, sprite):
+        sprite.rect.clamp_ip(self.window_edge)
+
+    def redraw_game_window(self):
+        self.window.fill(BLACK)
+        self.cat.redraw_cat(self.window)
+        pygame.display.update()
+
+    def main_loop(self):
+        #main game loop
+        running = True
+
+        while running:
+            self.clock.tick(60)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+            keys = pygame.key.get_pressed() 
+            if keys[pygame.K_w]: 
+                self.cat.go_up()
+            if keys[pygame.K_a]:
+                self.cat.go_left()
+            if keys[pygame.K_s]: 
+                self.cat.go_down()
+            if keys[pygame.K_d]: 
+                self.cat.go_right()
+
+            self.check_window_bounds(self.cat)
+            self.redraw_game_window()
+
+        pygame.quit()
+
+if __name__ == "__main__":
+    game = SophieGame()
+    game.main_loop()
