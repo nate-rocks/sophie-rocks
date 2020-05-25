@@ -75,7 +75,6 @@ class Cat(pygame.sprite.Sprite):
         self.y = 0
 
 
-
 class SophieGame():
     def __init__(self):
         pygame.init()
@@ -87,13 +86,17 @@ class SophieGame():
         pygame.display.set_caption("hello...")
         self.window_edge = self.window.get_rect()
         self.cat = Cat(50, 50)
+        self.cat2 = Cat(100,100)
+
+        self.cats = [self.cat, self.cat2]
 
     def check_window_bounds(self, sprite):
         sprite.rect.clamp_ip(self.window_edge)
 
     def redraw_game_window(self):
         self.window.fill(BLACK)
-        self.cat.redraw_cat(self.window)
+        for cat in self.cats:
+            cat.redraw_cat(self.window)
         pygame.display.update()
 
     def main_loop(self):
@@ -115,7 +118,8 @@ class SophieGame():
             if keys[pygame.K_d]: 
                 self.cat.go_right()
 
-            self.check_window_bounds(self.cat)
+            for cat in self.cats:
+                self.check_window_bounds(cat)
             self.redraw_game_window()
 
         pygame.quit()
