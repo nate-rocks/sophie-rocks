@@ -26,9 +26,9 @@ class Cat(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.x = init_x
         self.y = init_y
-        self.prev_x = 0
-        self.prev_y = 0
+
         self.step_size = 5
+        self.collided = False
         self.message = None
         self.load_images()
         self.stand_still()
@@ -79,13 +79,12 @@ class Cat(pygame.sprite.Sprite):
         self.down = False
 
     def undo_move(self):
-        self.x -= self.prev_x 
-        self.y -= self.prev_y
+        self.step_size = -self.step_size
+        self.collided = True
 
     def redraw(self, window):
-        self.rect.move_ip(self.x, self.y)
-        self.prex_x = self.x
-        self.prev_y = self.y
+        #self.rect.move_ip(self.x, self.y)
+
         if self.left:
             window.blit(self.left_cat, (self.rect.x, self.rect.y))
         elif self.right:
@@ -103,6 +102,14 @@ class Cat(pygame.sprite.Sprite):
 
     def collision_action(self):
         self.message = DialogBox("Ouch!", self)
+        self.undo_move()
+
+    def no_collision(self):
+        #if self.collided is True:
+            #self.step_size = -self.step_size
+            #self.collided = False
+
+        self.message = None
 
 
 
@@ -117,22 +124,50 @@ class SophieGame():
         pygame.display.set_caption("hello...")
         self.window_edge = self.window.get_rect()
         self.cat = Cat(50, 50)
-        self.cat2 = Cat(100,100)
+        self.cat2 = Cat(200,200)
         self.sprites = [self.cat, self.cat2]
 
     def check_window_bounds(self, sprite):
         sprite.rect.clamp_ip(self.window_edge)
 
-    def detect_collision(self, sprite):
-        if self.cat.rect.colliderect(sprite.rect):
-            sprite.collision_action()
-            self.cat.undo_move()
+    def detect_collision(self, dx, dy):
+        # If you collide move out based on velocity
+        for sprite in self.sprites:
+            if sprite is not self.cat:
+                if self.cat.rect.colliderect(sprite.rect):
+                    if dx > 0: # Moving right; Hit the left side of the wall
+                        self.cat.rect.right = sprite.rect.left
+                    if dx < 0: # Moving left; Hit the right side of the wall
+                        self.cat.rect.left = sprite.rect.right
+                    if dy > 0: # Moving down; Hit the top side of the wall
+                        self.cat.rect.bottom = sprite.rect.top
+                    if dy < 0: # Moving up; Hit the bottom side of the wall
+                        self.cat.rect.top = sprite.rect.bottom
+                    sprite.collision_action()
+                else:
+                    sprite.no_collision()
+
 
     def redraw_game_window(self):
         self.window.fill(BLACK)
         for sprite in self.sprites:
             sprite.redraw(self.window)
         pygame.display.update()
+
+    def move_cat(self):
+        # Move each axis separately. Note that this checks for collisions both times.
+        dx = self.cat.x
+        dy = self.cat.y
+        if dx != 0:
+            self.move_single_axis(dx, 0)
+        if dy != 0:
+            self.move_single_axis(0, dy)
+    
+    def move_single_axis(self, dx, dy):
+        # Move the rect
+        self.cat.rect.x += dx
+        self.cat.rect.y += dy
+        self.detect_collision(dx, dy)
 
     def main_loop(self):
         #main game loop
@@ -153,10 +188,10 @@ class SophieGame():
             if keys[pygame.K_d]: 
                 self.cat.go_right()
 
+            self.move_cat()
+
             for sprite in self.sprites:
                 self.check_window_bounds(sprite)
-                if sprite is not self.cat:
-                    self.detect_collision(sprite)
 
             self.redraw_game_window()
 
