@@ -4,23 +4,28 @@ import sys
 from pathlib import Path
 
 import colors
-from characters.cat import Cat
-from characters.bunny import Bunny
+from map.map import Map
+from characters.Cat.cat import Cat
+from characters.Bunny.bunny import Bunny
 
 
 class SophieGame():
     def __init__(self):
         pygame.init()
         self.clock = pygame.time.Clock()
-        
-        self.window_width = 600
-        self.window_height = 500
+
+        # 20 wide and 15 tall (32x32 squares)
+        self.window_width = 640
+        self.window_height = 480
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption("hello...")
         self.window_edge = self.window.get_rect()
         self.cat = Cat(50, 50)
         self.bunny = Bunny(200,200)
         self.sprites = [self.cat, self.bunny]
+        self.map = Map()
+        self.map.load_map("map_a")
+
 
     def check_window_bounds(self, sprite):
         sprite.rect.clamp_ip(self.window_edge)

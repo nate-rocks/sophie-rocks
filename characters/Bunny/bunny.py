@@ -1,12 +1,10 @@
 import pygame
 import os
 from pathlib import Path
-import sys
-print(sys.path)
 
-from .dialog_box import DialogBox
+from characters.dialog_box import DialogBox
 
-class Cat(pygame.sprite.Sprite):
+class Bunny(pygame.sprite.Sprite):
     def __init__(self, init_x, init_y):
         pygame.sprite.Sprite.__init__(self)
         self.x = init_x
@@ -20,11 +18,11 @@ class Cat(pygame.sprite.Sprite):
 
     def load_images(self):
         current_directory = Path(os.path.realpath(__file__)).parent
-        image_dir = "{}\\{}".format(current_directory, "Cat")
-        self.front_cat = pygame.image.load(r"{}\\{}".format(image_dir,'front_still.png'))
-        self.back_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'back_still.png'))
-        self.left_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'left_still.png'))
-        self.right_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'right_still.png'))
+        image_dir = "{}".format(current_directory)
+        self.front_cat = pygame.image.load(r"{}\\{}".format(image_dir,'bunny_front.png'))
+        self.back_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'bunny_back.png'))
+        self.left_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'bunny_left.png'))
+        self.right_cat = pygame.image.load(r"{}\\{}".format(image_dir, 'bunny_right.png'))
 
         self.rect = pygame.Rect((self.x, self.y), self.front_cat.get_rect().size)
         self.width, self.height = self.front_cat.get_rect().size
