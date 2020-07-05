@@ -6,3 +6,7 @@
 /.vs/ProjectSettings.json
 /.vs/slnx.sqlite-journal
 /.vs/slnx.sqlite
+
+*__pycache__*
+characters/__pycache__*
+*.idea*
