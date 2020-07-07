@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 import colors
-from map.map import Map
+from map import world_map
 from characters.Cat.cat import Cat
 from characters.Bunny.bunny import Bunny
 
@@ -23,7 +23,7 @@ class SophieGame():
         self.cat = Cat(50, 50)
         self.bunny = Bunny(200,200)
         self.sprites = [self.cat, self.bunny]
-        self.map = Map()
+        self.map = world_map.Map(self.window_width, self.window_height)
 
 
     def check_window_bounds(self, sprite):
@@ -49,7 +49,7 @@ class SophieGame():
 
     def redraw_game_window(self):
         self.window.fill(colors.BLACK)
-        self.map.load_map("map_a", self.window)
+        self.map.draw_map("map_a", self.window)
         for sprite in self.sprites:
             sprite.redraw(self.window)
         pygame.display.update()

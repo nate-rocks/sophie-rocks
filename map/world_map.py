@@ -3,12 +3,25 @@ import pygame
 import os
 import sys
 from pathlib import Path
+
 from map.tile import Tile
+from map.tile import TILE_HEIGHT
+from map.tile import TILE_WIDTH
 
 class Map():
-    def __init__(self):
-        self.square_height = 32
-        self.square_width = 32
+    def __init__(self, window_x, window_y):
+        self.window_x = window_x
+        self.window_y = window_y
+
+        num_width = int(window_x / TILE_WIDTH)
+        num_height = int(window_y / TILE_HEIGHT)
+
+        self.window_tiles = []
+        for y in range(num_height):
+            row = []
+            for x in range(num_width):
+                row.append(Tile(x*TILE_WIDTH, y*TILE_HEIGHT))
+            self.window_tiles.append(row)
 
         current_directory = Path(os.path.realpath(__file__)).parent
         self.map_dir = "{}\\{}".format(current_directory, "maps")
@@ -23,9 +36,9 @@ class Map():
                 for square in row:
                     square = square.strip()
                     if square == "W":
-                        print( "WALL")
+                        self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "WALL")
                     elif square == "G":
-                        print("GRASS")
+                        self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "GRASS")
                     x += 32
                 x = 0
                 y += 32
