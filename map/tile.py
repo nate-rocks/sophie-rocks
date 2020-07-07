@@ -16,7 +16,6 @@ class Tile():
         self.x = x
         self.y = y
     def draw(self, window, image):
-        #print("x={}, y={}".format(self.x, self.y))
         if image == "WALL":
             window.blit(background_util.WALL_PIC, (self.x, self.y))
         elif image == "GRASS":
