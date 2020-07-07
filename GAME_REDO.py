@@ -24,7 +24,6 @@ class SophieGame():
         self.bunny = Bunny(200,200)
         self.sprites = [self.cat, self.bunny]
         self.map = Map()
-        self.map.load_map("map_a")
 
 
     def check_window_bounds(self, sprite):
@@ -50,6 +49,7 @@ class SophieGame():
 
     def redraw_game_window(self):
         self.window.fill(colors.BLACK)
+        self.map.load_map("map_a", self.window)
         for sprite in self.sprites:
             sprite.redraw(self.window)
         pygame.display.update()
