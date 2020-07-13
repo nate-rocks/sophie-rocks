@@ -62,8 +62,6 @@ class SophieGame():
         for sprite in self.sprites:
             if isinstance(sprite, Tile) == False:
                 sprite.redraw(self.window)
-            for sprite in self.sprites:
-                print(sprite.__class__.__name__)
         pygame.display.update()
 
     def move_cat(self):
