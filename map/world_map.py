@@ -8,7 +8,7 @@ from map.tile import Tile
 from map.tile import TILE_HEIGHT
 from map.tile import TILE_WIDTH
 from map import background_util
-from GAME_REDO import  SophieGame
+from GAME_REDO import SophieGame
 
 class Map():
     def __init__(self, window_x, window_y):
@@ -39,7 +39,6 @@ class Map():
                     square = square.strip()
                     if square == "W":
                         self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "WALL")
-                        wall_rect = background_util.WALL_PIC.get_rect(topleft=(x, y))
                     elif square == "G":
                         self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "GRASS")
                     x += 32

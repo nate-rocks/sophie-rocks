@@ -16,6 +16,7 @@ class Cat(pygame.sprite.Sprite):
         self.message = None
         self.load_images()
         self.stand_still()
+        self.solid = True
 
     def load_images(self):
         current_directory = Path(os.path.realpath(__file__)).parent

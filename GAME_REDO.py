@@ -7,7 +7,7 @@ import colors
 from map import world_map
 from characters.Cat.cat import Cat
 from characters.Bunny.bunny import Bunny
-
+from map.tile import Tile
 
 class SophieGame():
     def __init__(self):
@@ -22,9 +22,17 @@ class SophieGame():
         self.window_edge = self.window.get_rect()
         self.cat = Cat(50, 50)
         self.bunny = Bunny(200,200)
+        #self.map.window_tiles =
         self.sprites = [self.cat, self.bunny]
         self.map = world_map.Map(self.window_width, self.window_height)
+        self.add_array()
 
+    def add_array(self):
+        for i in range(len(self.map.window_tiles)):
+            for j in range(len(self.map.window_tiles[i])):
+                self.sprites.append(self.map.window_tiles[i][j])
+        for sprite in self.sprites:
+            print(sprite.__class__.__name__)
 
     def check_window_bounds(self, sprite):
         sprite.rect.clamp_ip(self.window_edge)
@@ -34,14 +42,15 @@ class SophieGame():
         for sprite in self.sprites:
             if sprite is not self.cat:
                 if self.cat.rect.colliderect(sprite.rect):
-                    if dx > 0: # Moving right; Hit the left side of the wall
-                        self.cat.rect.right = sprite.rect.left
-                    if dx < 0: # Moving left; Hit the right side of the wall
-                        self.cat.rect.left = sprite.rect.right
-                    if dy > 0: # Moving down; Hit the top side of the wall
-                        self.cat.rect.bottom = sprite.rect.top
-                    if dy < 0: # Moving up; Hit the bottom side of the wall
-                        self.cat.rect.top = sprite.rect.bottom
+                    if sprite.solid == True:
+                        if dx > 0: # Moving right; Hit the left side of the wall
+                            self.cat.rect.right = sprite.rect.left
+                        if dx < 0: # Moving left; Hit the right side of the wall
+                            self.cat.rect.left = sprite.rect.right
+                        if dy > 0: # Moving down; Hit the top side of the wall
+                            self.cat.rect.bottom = sprite.rect.top
+                        if dy < 0: # Moving up; Hit the bottom side of the wall
+                            self.cat.rect.top = sprite.rect.bottom
                     sprite.collision_action()
                 else:
                     sprite.no_collision()
@@ -51,7 +60,10 @@ class SophieGame():
         self.window.fill(colors.BLACK)
         self.map.draw_map("map_a", self.window)
         for sprite in self.sprites:
-            sprite.redraw(self.window)
+            if isinstance(sprite, Tile) == False:
+                sprite.redraw(self.window)
+            for sprite in self.sprites:
+                print(sprite.__class__.__name__)
         pygame.display.update()
 
     def move_cat(self):
