@@ -31,7 +31,6 @@ class Tile():
         self.message = None
 
     def draw(self, window, image):
-        #print("x={}, y={}".format(self.x, self.y))
         if image == "WALL":
             window.blit(background_util.WALL_PIC, (self.x, self.y))
             self.solid = True
