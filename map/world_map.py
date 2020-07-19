@@ -28,12 +28,11 @@ class Map():
         current_directory = Path(os.path.realpath(__file__)).parent
         self.map_dir = "{}\\{}".format(current_directory, "maps")
 
-    def draw_map(self, map_string, window):
+    def draw_map(self, map_string, window, x, y):
         map_file = self.map_dir + "\\{}.map".format(map_string)
         with open(map_file) as csv_map_data:
             csv_map = csv.reader(csv_map_data)
-            x = 0
-            y = 0
+
             for row in csv_map:
                 for square in row:
                     if (x >= self.window_x):
