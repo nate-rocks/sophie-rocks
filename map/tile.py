@@ -19,15 +19,9 @@ class Tile():
         self.solid = False
 
     def collision_action(self):
-        #self.message = DialogBox("Ouch!", self)
-        #self.undo_move()
         self.message = None
 
     def no_collision(self):
-        #if self.collided is True:
-            #self.step_size = -self.step_size
-            #self.collided = False
-
         self.message = None
 
     def draw(self, window, image):

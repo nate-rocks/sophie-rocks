@@ -31,8 +31,7 @@ class SophieGame():
         for i in range(len(self.map.window_tiles)):
             for j in range(len(self.map.window_tiles[i])):
                 self.sprites.append(self.map.window_tiles[i][j])
-        for sprite in self.sprites:
-            print(sprite.__class__.__name__)
+
 
     def check_window_bounds(self, sprite):
         sprite.rect.clamp_ip(self.window_edge)

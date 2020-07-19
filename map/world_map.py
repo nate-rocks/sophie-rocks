@@ -36,11 +36,16 @@ class Map():
             y = 0
             for row in csv_map:
                 for square in row:
+                    if (x >= self.window_x):
+                        break
                     square = square.strip()
                     if square == "W":
                         self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "WALL")
                     elif square == "G":
                         self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "GRASS")
                     x += 32
+
                 x = 0
                 y += 32
+                if (y>= self.window_y):
+                    break
