@@ -20,9 +20,9 @@ class SophieGame():
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption("hello...")
         self.window_edge = self.window.get_rect()
-        self.cat = Cat(50, 50)
-        self.bunny = Bunny(200,200)
-        #self.map.window_tiles =
+        self.cat = Cat(304, 224)
+        self.bunny = Bunny(100,100)
+
         self.sprites = [self.cat, self.bunny]
         self.map = world_map.Map(self.window_width, self.window_height)
         self.add_array()
@@ -79,7 +79,6 @@ class SophieGame():
         self.detect_collision(dx, dy)
 
     def main_loop(self):
-        #main game loop
         running = True
 
         while running:
