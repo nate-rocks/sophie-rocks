@@ -20,7 +20,9 @@ class SophieGame():
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption("hello...")
         self.window_edge = self.window.get_rect()
-        self.cat = Cat(304, 224)
+        self.start_x = 304
+        self.start_y = 224
+        self.cat = Cat(self.start_x, self.start_y)
         self.bunny = Bunny(100,100)
 
         self.sprites = [self.cat, self.bunny]
@@ -57,7 +59,7 @@ class SophieGame():
 
     def redraw_game_window(self):
         self.window.fill(colors.BLACK)
-        self.map.draw_map("map_a", self.window, self.cat.rect.x, self.cat.rect.y)
+        self.map.draw_map("map_a", self.window, (self.cat.rect.x - self.start_x) , (self.cat.rect.y - self.start_y))
         for sprite in self.sprites:
             if isinstance(sprite, Tile) == False:
                 sprite.redraw(self.window)
