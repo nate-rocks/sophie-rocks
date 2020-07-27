@@ -28,20 +28,16 @@ class Map():
         current_directory = Path(os.path.realpath(__file__)).parent
         self.map_dir = "{}\\{}".format(current_directory, "maps")
 
-    def find_origin(self, x, y):
-        x -= x
-        y -= y
-
     def draw_map(self, map_string, window, x, y):
-        map_file = self.map_dir + "\\{}.map".format(map_string)
         a = 0
         b = 0
+        map_file = self.map_dir + "\\{}.map".format(map_string)
         with open(map_file) as csv_map_data:
             csv_map = csv.reader(csv_map_data)
-            self.find_origin(x, y)
             for row in csv_map:
                 for square in row:
                     if a < x or b < y:
+                        a += 32
                         continue
                     if ((x + a) >= self.window_x):
                         break
@@ -50,7 +46,6 @@ class Map():
                         self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "WALL")
                     elif square == "G":
                         self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "GRASS")
-                    a += 32
                 a = 0
                 b += 32
                 if ((y + b) >= self.window_y):
