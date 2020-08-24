@@ -108,6 +108,5 @@ class SophieGame():
         pygame.quit()
         
 if __name__ == "__main__":
-
     game = SophieGame()
     game.main_loop()
