@@ -28,6 +28,12 @@ class Map():
         current_directory = Path(os.path.realpath(__file__)).parent
         self.map_dir = "{}\\{}".format(current_directory, "maps")
 
+    def calculate_tile(self, map_position, character_position, divisor):
+        if character_position < 0:
+            character_position = 0
+        tile_position = (map_position - character_position) / divisor
+        return int(tile_position)
+
     def draw_map(self, map_string, window, x, y):
         a = 0
         b = 0
@@ -39,16 +45,23 @@ class Map():
                     if a < x or b < y:
                         a += 32
                         continue
-                    if ((x + a) >= self.window_x):
+                    if ((abs(x) + a) >= self.window_x + abs(x)):
                         break
                     square = square.strip()
-                    if square == "W":
-                        self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "WALL")
-                    elif square == "G":
-                        self.window_tiles[int(y/TILE_HEIGHT)][int(x/TILE_WIDTH)].draw(window, "GRASS")
+                    y_tile = self.calculate_tile(b, y, TILE_HEIGHT)
+                    x_tile = self.calculate_tile(a, x, TILE_WIDTH)
+                    try:
+                        if square == "W":
+                            self.window_tiles[y_tile][x_tile].draw(window, "WALL")
+                        elif square == "G":
+                            self.window_tiles[y_tile][x_tile].draw(window, "GRASS")
+                    except Exception as error:
+                        print(error)
+                        raise error
+                    a+=32
                 a = 0
                 b += 32
-                if ((y + b) >= self.window_y):
+                if ((abs(y) + b) >= self.window_y + abs(y)):
                     break
 
 
