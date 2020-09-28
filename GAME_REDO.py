@@ -26,7 +26,7 @@ class SophieGame():
         self.bunny = Bunny(100,100)
 
         self.sprites = [self.cat, self.bunny]
-        self.map = world_map.Map(self.window_width, self.window_height)
+        self.map = world_map.Map("map_a", self.window_width, self.window_height)
         self.add_array()
 
     def add_array(self):
@@ -59,7 +59,7 @@ class SophieGame():
 
     def redraw_game_window(self):
         self.window.fill(colors.BLACK)
-        self.map.draw_map("map_a", self.window, (self.cat.rect.x - self.start_x), (self.cat.rect.y - self.start_y))
+        self.map.draw_map(self.window, (self.cat.rect.x - self.start_x), (self.cat.rect.y - self.start_y))
         for sprite in self.sprites:
             if isinstance(sprite, Tile) == False:
                 sprite.redraw(self.window)
