@@ -31,7 +31,6 @@ class Map():
 
         self.csv_map = list(csv.reader(open(map_file)))
 
-
     def calculate_tile(self, map_position, character_position, divisor):
         if character_position < 0:
             character_position = 0
@@ -39,15 +38,17 @@ class Map():
         return int(tile_position)
 
     def draw_map(self, window, x, y):
+        #  x and y are the beginning of the window at 0,0 as it overlays only the map file
+        # a and b track the map file in general as you loop over it to find the window
+
         a = 0
         b = 0
-
         for row in self.csv_map:
             for square in row:
                 if a < x or b < y:
                     a += 32
                     continue
-                if ((abs(x) + a) >= self.window_x + abs(x)):
+                if a >= self.window_x:
                     break
                 square = square.strip()
                 y_tile = self.calculate_tile(b, y, TILE_HEIGHT)
@@ -60,10 +61,10 @@ class Map():
                 except Exception as error:
                     print(error)
                     raise error
-                a+=32
+                a += 32
             a = 0
             b += 32
-            if ((abs(y) + b) >= self.window_y + abs(y)):
+            if b >= self.window_y:
                 break
 
 

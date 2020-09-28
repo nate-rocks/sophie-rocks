@@ -78,6 +78,7 @@ class SophieGame():
         # Move the rect
         self.cat.rect.x += dx
         self.cat.rect.y += dy
+
         self.detect_collision(dx, dy)
 
     def main_loop(self):
